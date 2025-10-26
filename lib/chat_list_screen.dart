@@ -63,13 +63,40 @@ class ChatListScreen extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => ChatScreen(receiverEmail: otherUserEmail),
-                        ),
-                      );
+                    onTap: () async {
+                      try {
+                        // Query the users collection for the user with this email
+                        final query = await firestore
+                            .collection('users')
+                            .where('email', isEqualTo: otherUserEmail)
+                            .limit(1)
+                            .get();
+
+                        String otherName = otherUserEmail;
+                        String otherPhoto = '';
+
+                        if (query.docs.isNotEmpty) {
+                          final data = query.docs.first.data();
+                          otherName = (data['displayName'] ?? otherUserEmail) as String;
+                          otherPhoto = (data['photoUrl'] ?? '') as String;
+                        }
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ChatScreen(
+                              receiverEmail: otherUserEmail,
+                              receiverName: otherName,
+                              receiverPhoto: otherPhoto,
+                            ),
+                          ),
+                        );
+                      } catch (e) {
+                        // optional: show error
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Could not open chat: $e')),
+                        );
+                      }
                     },
                   );
                 },

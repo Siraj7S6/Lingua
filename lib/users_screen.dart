@@ -28,18 +28,35 @@ class UsersScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               final user = users[index];
               final email = user['email'];
+              final displayName = (user['displayName'] != null &&
+                  user['displayName'].toString().trim().isNotEmpty)
+                  ? user['displayName']
+                  : 'Lingua User'; // default name if empty
+              final photoUrl = (user['photoUrl'] ?? '').toString();
 
               // Skip current user
               if (email == currentUser?.email) return const SizedBox.shrink();
 
               return ListTile(
-                title: Text(email),
+                leading: CircleAvatar(
+                  radius: 25,
+                  backgroundImage: photoUrl.isNotEmpty
+                      ? NetworkImage(photoUrl)
+                      : const AssetImage('assets/default_avatar.png')
+                  as ImageProvider,
+                ),
+                title: Text(
+                  displayName,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (_) => ChatScreen(
                         receiverEmail: email,
+                        receiverName: displayName,
+                        receiverPhoto: photoUrl,
                       ),
                     ),
                   );

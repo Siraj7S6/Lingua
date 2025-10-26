@@ -4,7 +4,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class ChatScreen extends StatefulWidget {
   final String receiverEmail;
-  const ChatScreen({super.key, required this.receiverEmail});
+  final String receiverName;
+  final String receiverPhoto;
+
+  const ChatScreen({
+    super.key,
+    required this.receiverEmail,
+    required this.receiverName,
+    required this.receiverPhoto,
+  });
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -45,7 +53,19 @@ class _ChatScreenState extends State<ChatScreen> {
     final chatId = getChatId(sender, widget.receiverEmail);
 
     return Scaffold(
-      appBar: AppBar(title: Text(widget.receiverEmail)),
+        appBar: AppBar(
+          title: Row(
+            children: [
+              CircleAvatar(
+                backgroundImage: widget.receiverPhoto.isNotEmpty
+                    ? NetworkImage(widget.receiverPhoto)
+                    : const AssetImage('assets/default_avatar.png') as ImageProvider,
+              ),
+              const SizedBox(width: 10),
+              Text(widget.receiverName),
+            ],
+          ),
+        ),
       body: Column(
         children: [
           Expanded(
