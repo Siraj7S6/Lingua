@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "901192473751",
+    "project_id": "lingua-ee198",
+    "storage_bucket": "lingua-ee198.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:901192473751:android:b0bd1fb528cc637fc01dd2",
+        "android_client_info": {
+          "package_name": "com.example.lingua"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4FH-FyeHesGuswQAb-HoPwEN8vWHihQs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
