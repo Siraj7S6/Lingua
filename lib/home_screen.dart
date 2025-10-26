@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'chat_screen.dart';
-import 'users_screen.dart'; // add at the top
-
+import 'users_screen.dart';
+import 'chat_list_screen.dart';
+import 'profile_screen.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -15,25 +15,49 @@ class HomeScreen extends StatelessWidget {
         title: const Text('Lingua Home'),
         actions: [
           IconButton(
+            icon: const Icon(Icons.logout),
             onPressed: () async {
               await FirebaseAuth.instance.signOut();
             },
-            icon: const Icon(Icons.logout),
           ),
         ],
       ),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const UsersScreen()),
-            );
-          },
-          child: const Text('View Users'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Welcome, ${user?.email ?? "User"}!'),
+            const SizedBox(height: 20),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.people),
+              label: const Text('View Users'),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const UsersScreen()));
+              },
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.chat),
+              label: const Text('View Chats'),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const ChatListScreen()));
+              },
+            ),
+
+            ElevatedButton.icon(
+              icon: const Icon(Icons.person),
+              label: const Text('Edit Profile'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const ProfileScreen()),
+                );
+              },
+            ),
+
+          ],
         ),
       ),
-
     );
   }
 }

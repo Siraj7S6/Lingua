@@ -26,14 +26,21 @@ class _LoginScreenState extends State<LoginScreen> {
           password: password,
         );
       } else {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        // Create the user in Firebase Authentication
+        UserCredential userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
 
         // 🔹 Save user info to Firestore
-        await FirebaseFirestore.instance.collection('users').doc(email).set({
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userCredential.user!.uid)
+            .set({
           'email': email,
+          'displayName': email.split('@')[0], // default name before user updates it
+          'photoUrl': '', // empty for now
           'createdAt': Timestamp.now(),
         });
       }
